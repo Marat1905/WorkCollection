@@ -1,5 +1,4 @@
-﻿using System.Text;
-using static System.Net.Mime.MediaTypeNames;
+﻿using System.Collections.Generic;
 
 namespace WorkCollection.Task2
 {
@@ -11,20 +10,8 @@ namespace WorkCollection.Task2
 
             foreach (string line in GetReadFiles(Path.Combine("Data","Text1.txt")))
             {
-                var noPunctuationText = new string(line.Where(c => !char.IsPunctuation(c)).ToArray());
-
-                string[] words = noPunctuationText.Split(' ');
-                
-                foreach (string word in words)
-                {
-                    if(string.IsNullOrWhiteSpace(word)) 
-                        continue;
-                    
-                    if (map.ContainsKey(word))
-                        map[word] += 1;
-                    else
-                       map.Add(word, 1);
-                }
+                var arrayTexts = CreateArray(line);
+                AddChangeDictionary(arrayTexts, map);
             }
 
             Console.WriteLine("10 слов часто встречаемые");
@@ -46,6 +33,33 @@ namespace WorkCollection.Task2
                         yield return result;
                 }
             yield break;
+        }
+
+        /// <summary>Метод для разделения строки на массив</summary>
+        /// <param name="text">Входящий текст</param>
+        /// <returns>Возрат массива строк</returns>
+        static string[] CreateArray(string text)
+        {
+            var noPunctuationText = new string(text.Where(c => !char.IsPunctuation(c)).ToArray());
+
+            return  noPunctuationText.Split(' ');
+        }
+
+        /// <summary>Добавление в словарь или приращение value</summary>
+        /// <param name="texts">Массив строк</param>
+        /// <param name="dictionary">Словарь</param>
+        static void AddChangeDictionary(string[] texts, Dictionary<string,int> dictionary)
+        {
+            foreach (string text in texts)
+            {
+                if (string.IsNullOrWhiteSpace(text))
+                    continue;
+
+                if (dictionary.ContainsKey(text))
+                    dictionary[text] += 1;
+                else
+                    dictionary.Add(text, 1);
+            }
         }
     }
 }
