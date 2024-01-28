@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace WorkCollection.Task2
+﻿namespace WorkCollection.Task2
 {
     internal class Program
     {
